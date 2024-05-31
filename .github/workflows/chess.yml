@@ -1,0 +1,44 @@
+name: Deploy Node.js project to Azure Function App
+# https://github.com/Azure/actions-workflow-samples/blob/master/FunctionApp/windows-node.js-functionapp-on-azure.yml
+on: [push]
+
+# https://github.com/Azure/actions-workflow-samples
+# CONFIGURATION
+# For help, go to https://github.com/Azure/Actions
+#
+# Set up the following secrets in your repository:
+# AZURE_FUNCTIONAPP_PUBLISH_PROFILE
+env:
+  AZURE_FUNCTIONAPP_NAME: "tf-chess" # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "." # set this to the path to your function app project, defaults to the repository root
+  NODE_VERSION: "20.x" # set this to the node version to use (e.g. '8.x', '10.x', '12.x')
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: "Install and Test"
+        shell: bash
+        run: |
+          #pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          npm install
+          npm run test
+          #npm run build --if-present
+          #popd
+
+      - name: "Deploy to Azure Functions"
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}

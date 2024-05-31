@@ -1,0 +1,24 @@
+{
+  "name": "azure-functions-chess",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Ryan Lelek <ryanlelek@gmail.com>",
+  "description": "Process chess moves",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "jest --coverage",
+    "lint": "prettier --write ."
+  },
+  "dependencies": {
+    "@azure/functions": "4.5.0",
+    "@azure/storage-blob": "12.18.0",
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "azurite": "3.30.0",
+    "jest": "29.7.0",
+    "prettier": "3.2.5",
+    "supertest": "7.0.0"
+  }
+}
