@@ -4,7 +4,9 @@ resource "azurerm_storage_account" "chess" {
   resource_group_name      = azurerm_resource_group.chess.name
   location                 = azurerm_resource_group.chess.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  # https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy
+  account_replication_type = "GRS"
+  min_tls_version          = "TLS1_2"
 }
 
 # Stores request information for processing
